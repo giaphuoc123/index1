@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Chúc Mừng Sinh Nhật Mẹ Yêu</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sora', serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffd6e8 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Login Screen */
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9bb5 0%, #ffb3d1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+            width: 90%;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .login-title {
+            color: #d6336c;
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            color: #d6336c;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ffb3d1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #d6336c;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #d6336c 0%, #ff9bb5 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #d6336c;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+        }
+
+        /* Falling Hearts Animation */
+        .heart {
+            position: fixed;
+            color: #ff9bb5;
+            font-size: 20px;
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(255, 183, 209, 0.3) 0%, rgba(255, 215, 232, 0.3) 100%);
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            color: #d6336c;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            color: #b8527a;
+            animation: fadeInUp 1s ease 0.5s both;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Music Control */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .music-btn {
+            background: linear-gradient(135deg, #d6336c 0%, #ff9bb5 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .music-btn.playing {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Image Gallery */
+        .gallery {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery h2 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #d6336c;
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .gallery h2.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .images-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .image-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .image-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #ffb3d1 0%, #ffd6e8 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d6336c;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .image-caption {
+            color: #b8527a;
+            font-style: italic;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* Message Section */
+        .message-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(255, 183, 209, 0.2) 0%, rgba(255, 215, 232, 0.2) 100%);
+        }
+
+        .message-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .message-container h2 {
+            font-size: 2.5em;
+            color: #d6336c;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .message-container h2.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .message-text {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #b8527a;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.3s;
+        }
+
+        .message-text.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 20px;
+            text-align: center;
+            color: #d6336c;
+            font-size: 18px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .footer.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .images-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery h2, .message-container h2 {
+                font-size: 2em;
+            }
+        }
+
+        .heart {
+  animation: fall linear infinite;
+  animation-duration: calc(5s + 5 * var(--i));
+  left: calc(100vw * var(--i));
+  font-size: calc(12px + 10 * var(--i));
+  opacity: calc(0.5 + 0.5 * var(--i));
+  z-index: 1;
+}
+    </style>
+</head>
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.utils.toArray('.animate').forEach((el) => {
+    gsap.from(el, {
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 80%',
+        toggleActions: 'play none none none',
+      },
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      ease: 'power3.out',
+    });
+  });
+</script>
+
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <h2 class="login-title">🌸 Đăng nhập để vào trang sinh nhật 🌸</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="name">Họ và tên:</label>
+                    <input type="text" id="name" placeholder="Họ Và Tên Mẹ (viết hoa/viết thường đầy đủ)" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthday">Sinh nhật (DD/MM/YYYY):</label>
+                    <input type="text" id="birthday" placeholder="Ngày sinh nhật năm nay của mẹ" required>
+                </div>
+                <button type="submit" class="login-btn">🎂 Chúc Mừng Sinh Nhật Mẹ</button>
+                <div class="error-message" id="errorMessage">
+                    Thông tin đăng nhập không chính xác!
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Music Control -->
+        <div class="music-control">
+            <button class="music-btn" id="musicBtn" title="Phát nhạc chúc mừng sinh nhật">
+                🎵
+            </button>
+        </div>
+
+        <!-- Header Section -->
+        <header class="header">
+            <h1>🌸 Chúc Mừng Sinh Nhật Mẹ Yêu 🌸</h1>
+            <p>Hôm nay là ngày đặc biệt nhất trong năm - sinh nhật của người mẹ tuyệt vời nhất trên đời. Con gửi đến mẹ những lời chúc tốt đẹp nhất và tình yêu thương vô hạn.</p>
+        </header>
+
+        <!-- Image Gallery -->
+        <section class="gallery">
+            <h2 class="gallery-title">💕 Những Khoảnh Khắc Đẹp 💕</h2>
+            <div class="images-container">
+                <div class="image-card">
+                    <div class="image-placeholder">
+                        <img src="mom1.jpg" style="width: 100%; height: 100%; border-radius: 15px;">
+                    </div>
+                    <p class="image-caption">Sinh Nhật Vui Vẻ Nha Mẹ </p>
+                </div>
+                <div class="image-card">
+                    <div class="image-placeholder">
+                        <img src="mom.jpg" style="width: 100%; height: 100%; border-radius: 15px;">    
+                    </div>
+                    <p class="image-caption">Chúc Mẹ Trẻ Mãi Không Già </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Message Section -->
+        <section class="message-section">
+            <div class="message-container">
+                <h2 class="message-title">💌 Lời Nhắn Gửi Yêu Thương 💌</h2>
+                <div class="message-text">
+                    <p>Chúc Mẹ Sinh Nhật Vui Vẻ</p>
+                    <p>Trong ngày sinh nhật đặc biệt này, con muốn gửi đến mẹ những lời yêu thương sâu sắc nhất. Mẹ là người đã cho con cuộc sống, nuôi dưỡng con khôn lớn bằng tình yêu thương vô bờ bến.</p>
+                    <p>Mẹ đã dạy con biết yêu thương, biết chia sẻ và biết trân trọng những điều quý giá trong cuộc sống. Mỗi ngày trôi qua, con càng nhận ra mẹ là người phụ nữ tuyệt vời nhất mà con từng biết.</p>
+                    <p>Con chúc mẹ sinh nhật thật vui vẻ, sức khỏe dồi dào, luôn tươi trẻ và hạnh phúc. Con sẽ cố gắng trở thành niềm tự hào của mẹ.</p>
+                    <p>Yêu mẹ nhiều lắm! 💖</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🎂 Với tình yêu thương vô hạn từ con 🎂</p>
+        </footer>
+    </div>
+
+    
+
+    <!-- Audio element for birthday music -->
+    <audio id="birthdayMusic" loop>
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmAcBj6X2O7EcSEFl2+z9dqEOgYaY7zn7aJODw1MoPT0wGIcBzuU2fHOfyMFQ2q//tqDOwYbYrvpv3MhBz6F2u3AizsGfmK15+xDCgG9a7tow4Ip9mjI3Y9NTgG7Y79txKIpHnfR5ItQCRq5a8BfwyIpnGfR0pJcExS3a8ZqxCco3GLQ5oRCCAO9ar5TQBgJL7HQ9Y0pCBiwc9F5T28CgmW66uCGSAwqQXbR7YtECQa5b8BdxCIoKHfR6o1MCxu5a8NeyCco0GLQ95YZEwu3bcVqwicooWfQz41ODgC7a8VrxCgnWGW55eKGSQYqQ4HJr4I=" type="audio/wav">
+    </audio>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+
+confetti({
+  particleCount: 200,
+  spread: 160,
+  origin: { y: 0.6 },
+});
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const birthday = document.getElementById('birthday').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            
+            console.log('Name entered:', name);
+            console.log('Birthday entered:', birthday);
+            console.log('Expected name: Nguyễn Thị Kim Tuyến');
+            console.log('Expected birthday: 26/6/2025');
+            
+            // Check credentials - more flexible matching
+            const correctName = 'Nguyễn Thị Kim Tuyến';
+            const correctBirthday = '26/6/2025';
+            
+            if (name.toLowerCase() === correctName.toLowerCase() && birthday === correctBirthday) {
+                // Login successful
+                console.log('Login successful!');
+                const loginContainer = document.getElementById('loginContainer');
+                const mainContent = document.getElementById('mainContent');
+                
+                loginContainer.style.opacity = '0';
+                loginContainer.style.transition = 'opacity 0.5s ease';
+                
+                setTimeout(() => {
+                    loginContainer.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    // Force reflow
+                    mainContent.offsetHeight;
+                    startAnimations();
+                }, 500);
+            } else {
+                // Login failed
+                console.log('Login failed!');
+                errorMessage.style.display = 'block';
+                errorMessage.style.color = '#d6336c';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        });
+
+        // Start animations and effects
+        function startAnimations() {
+            createFallingHearts();
+            setupScrollAnimations();
+        }
+
+        // Falling hearts animation
+        function createFallingHearts() {
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '💖';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                heart.style.opacity = Math.random();
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }
+
+            // Create hearts continuously
+            setInterval(createHeart, 300);
+        }
+
+        for (let i = 0; i < 30; i++) {
+  const heart = document.createElement('div');
+  heart.classList.add('heart');
+  heart.style.setProperty('--i', Math.random());
+  heart.innerHTML = '💖';
+  document.body.appendChild(heart);
+}
+
+        setInterval(() => {
+  const heart = document.createElement('div');
+  heart.innerText = '💖';
+  heart.style.position = 'fixed';
+  heart.style.top = '-20px';
+  heart.style.left = `${Math.random() * 100}vw`;
+  heart.style.fontSize = `${Math.random() * 20 + 20}px`;
+  heart.style.opacity = '0.8';
+  heart.style.zIndex = '9999';
+  heart.style.animation = 'fall 5s linear forwards';
+  document.body.appendChild(heart);
+  
+  setTimeout(() => heart.remove(), 5000);
+}, 300);
+
+const style = document.createElement('style');
+style.innerHTML = `
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+`;
+document.head.appendChild(style);
+
+        // Scroll animations
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements for animation
+            const animateElements = document.querySelectorAll('.gallery-title, .image-card, .message-title, .message-text, .footer');
+            animateElements.forEach(el => observer.observe(el));
+
+            // Stagger image card animations
+            const imageCards = document.querySelectorAll('.image-card');
+            imageCards.forEach((card, index) => {
+                setTimeout(() => {
+                    observer.observe(card);
+                }, index * 200);
+            });
+        }
+
+        // Music control
+        const musicBtn = document.getElementById('musicBtn');
+        const birthdayMusic = document.getElementById('birthdayMusic');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', function() {
+            if (isPlaying) {
+                birthdayMusic.pause();
+                musicBtn.textContent = '🎵';
+                musicBtn.classList.remove('playing');
+                isPlaying = false;
+            } else {
+                // Create a simple birthday tune using Web Audio API
+                playBirthdayTune();
+                musicBtn.textContent = '🎶';
+                musicBtn.classList.add('playing');
+                isPlaying = true;
+            }
+        });
+
+        // Simple birthday tune using Web Audio API
+        function playBirthdayTune() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const notes = [
+                {freq: 261.63, duration: 0.5}, // C
+                {freq: 261.63, duration: 0.5}, // C
+                {freq: 293.66, duration: 1},   // D
+                {freq: 261.63, duration: 1},   // C
+                {freq: 349.23, duration: 1},   // F
+                {freq: 329.63, duration: 2},   // E
+            ];
+
+            let startTime = audioContext.currentTime;
+
+            notes.forEach((note, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.setValueAtTime(note.freq, startTime);
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(0.3, startTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + note.duration);
+
+                oscillator.start(startTime);
+                oscillator.stop(startTime + note.duration);
+
+                startTime += note.duration;
+            });
+
+            // Reset button after tune finishes
+            setTimeout(() => {
+                musicBtn.textContent = '🎵';
+                musicBtn.classList.remove('playing');
+                isPlaying = false;
+            }, startTime * 1000);
+        }
+
+        // Smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+</html>
